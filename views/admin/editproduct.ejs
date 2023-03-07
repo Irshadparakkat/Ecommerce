@@ -1,0 +1,144 @@
+<%- include('partials/adminhead.ejs') %>
+
+	<div class="mobile-menu-overlay"></div>
+
+	<div class="main-container">
+		<div class="pd-ltr-20 xs-pd-20-10">
+			<div class="min-height-200px">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index.html">Product controll</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Edit Product</li>
+								</ol>
+							</nav>
+						</div>
+
+					</div>
+				</div>
+				<!-- Default Basic Forms Start -->
+				<!-- Default Basic Forms End -->
+
+				<!-- horizontal Basic Forms Start -->
+				<div class="pd-20 card-box mb-30">
+					<div class="clearfix">
+						<div class="pull-left">
+							<h4 class="text-blue h4">Edit Product</h4>
+							<!-- <p class="mb-30">All bootstrap element classies</p> -->
+						</div>
+						<!-- <div class="pull-right">
+							<a href="#horizontal-basic-form1" class="btn btn-primary btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button"><i class="fa fa-code"></i> Source Code</a>
+						</div> -->
+					</div>
+
+					<form id="form" autocomplete="off">
+
+						<div class="form-group" style="margin-top: 1rem;">
+							<label style="font-weight: 600; font-size: larger;">Product Name</label>
+							<input class="form-control" name="name" value="<%=product.name%>" type="text"
+								style="padding: .375rem .75rem;">
+						</div>
+
+						<input type="text" value="<%=product._id%>" name="productid" style="display: none;">
+
+						<div class="form-group" style="margin-top: 1rem;">
+
+						</div>
+						<div class="form-group" style="margin-top: 1rem;">
+							<label style="font-weight: 600; font-size: larger;">Select category</label>
+							<select name="category" style="padding: .375rem .75rem;   ">
+								<% for(var i=0;i<categories.length;i++){ %>
+									<option style="font-size:larger" value="<%=product.category%>">
+										<%= categories[i].name %>
+									</option>
+									<% } %>
+							</select>
+						</div>
+						<div>
+							<h4>Select the Size</h4>
+						</div>
+						<div style="display: flex; flex-wrap: wrap; margin-top: 1rem;">
+							<label style="font-weight: 600; font-size: larger;">Select Size</label>
+
+							<select name="size" value="<%=product.size%>"
+								style="padding: .375rem .75rem;  margin-left: 30px; ">
+								<option style="font-size:larger">S</option>
+								<option style="font-size:larger">M</option>
+								<option style="font-size:larger">L</option>
+								<option style="font-size:larger">XL</option>
+							</select>
+
+
+						</div>
+
+						<div class="form-group" style="margin-top: 1rem;">
+							<label for="quantity" style="font-weight: 600; font-size: larger;">Stock</label>
+							<input type="text" id="quantity" name="stock" value="<%=product.stock%>"
+								style="padding: .375rem .75rem;">
+						</div>
+						<div class="form-group" style="margin-top: 1rem;">
+							<label for="exampleInputPassword1" style="font-weight: 600; font-size: larger;">Product
+								Prize</label>
+							<input type="text" name="price" value="<%=product.price%>" 
+								style="padding: .375rem .75rem;">
+
+						</div>
+
+						<div class="mb-3">
+							<label for="exampleFormControlTextarea1" class="form-label"
+								style="font-weight: 600; font-size: larger;">Description</label>
+							<textarea class="form-control" id="exampleFormControlTextarea1" name="description"
+								rows="3"><%=product.description%></textarea>
+						</div>
+
+						<button type="submit" id="submitbutton" class="btn btn-primary"
+							style="margin-top: 1rem;">Submit</button>
+					</form>
+
+					
+					<script>
+						const form = document.getElementById("form");
+						form.addEventListener("submit", (event) => {
+							event.preventDefault();
+
+							const formData = new FormData(form);
+
+// Convert the form data to a plain object
+const data = {};
+for (const [key, value] of formData.entries()) {
+  data[key] = value;
+}
+
+							fetch("/admin/editproduct", {
+								method: "POST",
+								headers: {
+									"Content-Type": "application/json"
+								},
+								body: JSON.stringify(data)
+							})
+								.then((response) => {
+									if (!response.ok) {
+										throw new Error("Network response was not ok");
+									}
+									return response.json();
+								})
+								.then((result) => {
+									if (result.message) {
+										location.assign("/admin/allproduct");
+									}
+								})
+								.catch((err) => {
+									console.error("fetch is not working correctly");
+									alert("some error in api");
+								});
+						});
+					</script>
+
+
+
+					<%- include('partials/adminfooter.ejs') %>

@@ -1,0 +1,129 @@
+
+
+  <%- include('partials/adminhead.ejs') %>
+<body>
+
+	<div class="mobile-menu-overlay"></div>
+
+	<div class="main-container">
+		<div class="pd-ltr-20 xs-pd-20-10">
+			<div class="min-height-200px">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								<h4>Form</h4>
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a >Product controll</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Add new catogary</li>
+								</ol>
+							</nav>
+						</div>
+						
+					</div>
+				</div>
+				<!-- Default Basic Forms Start -->
+				<!-- Default Basic Forms End -->
+
+				<!-- horizontal Basic Forms Start -->
+				<div class="pd-20 card-box mb-30">
+					<div class="clearfix">
+						<div class="pull-left">
+							<h4 class="text-blue h4">Add Product Catogary</h4>
+							<!-- <p class="mb-30">All bootstrap element classies</p> -->
+						</div>
+						<!-- <div class="pull-right">
+							<a href="#horizontal-basic-form1" class="btn btn-primary btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button"><i class="fa fa-code"></i> Source Code</a>
+						</div> -->
+					</div>
+					
+					<form id="myform">
+						<div class="form-group">
+						  <label>Category Name</label>
+						  <input class="form-control" name="name" type="text">
+						</div>
+						<div class="form-group">
+						  <label>Upload Image</label>
+						  <input type="file" name="categoryImage" class="form-control-file form-control height-auto">
+						</div>
+						<div class="form-group">
+						  <button type="submit" class="form-control btn btn-primary submit px-3">Submit</button>
+						</div>
+					  </form>
+					  
+					  <script>
+						// Get the form element
+						const form = document.getElementById('myform');
+					  
+						// Add a submit event listener to the form
+						form.addEventListener('submit', (event) => {
+						  // Prevent the form from submitting
+						  event.preventDefault();
+					  
+						  // Get the input elements
+						  const nameInput = form.querySelector('input[name="name"]');
+						  const fileInput = form.querySelector('input[name="categoryImage"]');
+					  
+						  // Get the input values
+						  const nameValue = nameInput.value.trim();
+						  const fileValue = fileInput.value.trim();
+					  
+						  // Check that the name field is not empty
+						  if (nameValue === '') {
+							alert('Please enter a category name');
+							nameInput.focus();
+							return;
+						  }
+					  
+						  // Check that the file field is not empty
+						  if (fileValue === '') {
+							alert('Please select an image file');
+							fileInput.focus();
+							return;
+						  }
+					  
+						  // Check that the file type is valid
+					  
+					  
+						  // Check that the file size is not too large
+						  const maxSize = 5 * 1024 * 1024; // 5 MB
+						  if (fileInput.files[0].size > maxSize) {
+							alert('The selected image file is too large (max 5 MB)');
+							fileInput.value = '';
+							fileInput.focus();
+							return;
+						  }
+					  
+						  // Create a FormData object to store the form data
+						  const formData = new FormData(form);
+					  
+						  // Send a POST request with the form data using the fetch method
+						  fetch('/admin/addedcatogary', {
+							method: 'POST',
+							body: formData
+						  })
+						  .then(response => {
+							if (response.ok) {
+							  alert('Category added successfully');
+							  location.assign('/allcatogary')
+							} else {
+							  alert('Failed to add category');
+							}
+						  })
+						  .catch(error => {
+							console.error('Error adding category:', error);
+							alert('An error occurred while adding the category');
+						  });
+						});
+					  </script>
+					  
+
+
+
+
+					  
+
+
+<%- include('partials/adminfooter.ejs') %>

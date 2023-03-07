@@ -1,0 +1,133 @@
+<%- include('partials/adminhead.ejs') %>
+
+	<div class="mobile-menu-overlay"></div>
+
+	<div class="main-container">
+		<div class="pd-ltr-20 xs-pd-20-10">
+			<div class="min-height-200px">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-md-6 col-sm-12">
+							<div class="title">
+								
+							</div>
+							<nav aria-label="breadcrumb" role="navigation">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index.html">Product controll</a></li>
+									<li class="breadcrumb-item active" aria-current="page">Add new Product</li>
+								</ol>
+							</nav>
+						</div>
+						<!-- <div class="col-md-6 col-sm-12 text-right">
+							<div class="dropdown">
+								<a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+									January 2018
+								</a>
+								<div class="dropdown-menu dropdown-menu-right">
+									<a class="dropdown-item" href="#">Export List</a>
+									<a class="dropdown-item" href="#">Policies</a>
+									<a class="dropdown-item" href="#">View Assets</a>
+								</div>
+							</div>
+						</div> -->
+					</div>
+				</div>
+				<!-- Default Basic Forms Start -->
+				<!-- Default Basic Forms End -->
+
+				<!-- horizontal Basic Forms Start -->
+				<div class="pd-20 card-box mb-30">
+					<div class="clearfix">
+						<div class="pull-left">
+							<h4 class="text-blue h4">Add New Product</h4>
+							<!-- <p class="mb-30">All bootstrap element classies</p> -->
+						</div>
+						<!-- <div class="pull-right">
+							<a href="#horizontal-basic-form1" class="btn btn-primary btn-sm scroll-click" rel="content-y"  data-toggle="collapse" role="button"><i class="fa fa-code"></i> Source Code</a>
+						</div> -->
+					</div>
+					
+					<form   action="/admin/addproduct"  method="post" enctype="multipart/form-data" autocomplete="off">
+						<div class="form-group" style="margin-top: 1rem;">
+						  <label style="font-weight: 600; font-size: larger;">Product Name</label>
+						  <input class="form-control" name="name" type="text" style="padding: .375rem .75rem;">
+						</div>
+						<div class="form-group" style="margin-top: 1rem;">
+						  <label style="font-weight: 600; font-size: larger;">Upload Images</label>
+						  <input type="file" name="productImages" class="form-control-file form-control height-auto" multiple onchange="previewImages()" style="padding: .375rem .75rem;">
+						</div>
+						<div class="form-group" style="margin-top: 1rem;">
+						  <div id="image-preview"></div>
+						</div>
+						<div class="form-group" style="margin-top: 1rem;">
+						  <label style="font-weight: 600; font-size: larger;">Select category</label>
+						  <select name="category" style="padding: .375rem .75rem;   ">
+							<% for(var i=0;i<categories.length;i++){ %>
+							  <option style="font-size:larger"><%= categories[i].name %></option>
+							<% } %>
+						  </select>
+						</div>
+		
+
+						<div style="display: flex; flex-wrap: wrap; margin-top: 1rem;">
+					<label style="font-weight: 600; font-size: larger;">Enter the Size</label>
+
+						
+					
+					<input type="text" style="padding: .375rem .75rem;  margin-left: 30px;"  name="size" >
+
+
+
+						</div>
+						
+						<div class="form-group" style="margin-top: 1rem;">
+						  <label for="quantity" style="font-weight: 600; font-size: larger;">Stock</label>
+						  <input type="text" id="quantity" name="stock" style="padding: .375rem .75rem;">
+						</div>
+						<div class="form-group" style="margin-top: 1rem;">
+						  <label for="exampleInputPassword1" style="font-weight: 600; font-size: larger;">Product Prize</label>
+							<input type="text" name="price"  placeholder="₹" style="padding: .375rem .75rem;">
+							
+							  </div>
+
+							  <div class="mb-3">
+								<label for="exampleFormControlTextarea1" class="form-label" style="font-weight: 600; font-size: larger;">Description</label>
+								<textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
+							  </div>
+							
+							  <button type="submit"  id="submitbutton" class="btn btn-primary" style="margin-top: 1rem;">Submit</button>
+							</form>					  
+
+
+<script>
+	function previewImages() {
+	  // Get the input element
+	  var input = document.querySelector("input[name='productImages']");
+	  // Get the image preview element
+	  var imagePreview = document.getElementById("image-preview");
+	  // Clear the image preview element
+	  imagePreview.innerHTML = "";
+	  // Loop through the files
+	  for (var i = 0; i < input.files.length; i++) {
+		// Create an image element
+	
+		var img = document.createElement("img");
+		// Set the source of the image to the URL of the file
+		img.src = URL.createObjectURL(input.files[i]);
+		// Append the image to the image preview element
+		img.style.width = "100px";
+img.style.height = "100px";
+img.style.padding="5px";
+img.style.margin="5px";
+
+		imagePreview.appendChild(img);
+	  }
+	}
+	</script>
+		
+
+		 
+
+<%- include('partials/adminfooter.ejs') %>
+
+

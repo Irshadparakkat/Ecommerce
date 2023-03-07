@@ -1,0 +1,92 @@
+
+
+ <%- include('partials/adminhead.ejs') %>
+
+     <div class="mobile-menu-overlay"></div>
+ 
+     <div class="main-container">
+         <div class="pd-ltr-20 xs-pd-20-10">
+             <div class="min-height-200px">
+                 <div class="page-header">
+                     <div class="row">
+                         <div class="col-md-6 col-sm-12">
+                             <div class="title">
+                                 
+                             </div>
+                             <nav aria-label="breadcrumb" role="navigation">
+                                 <ol class="breadcrumb">
+                                     <li class="breadcrumb-item"><a href="index.html">Product controll</a></li>
+                                     <li class="breadcrumb-item active" aria-current="page">All Products</li>
+                                 </ol>
+                             </nav>
+                         </div>
+						 <table class="table table-striped">
+							<thead>
+							  <tr>
+								<th scope="col">Sl No</th>
+								<th scope="col">First</th>
+								<th scope="col">Last</th>
+								<th scope="col">Email</th>
+								<th scope="col">Action</th>
+							  </tr>
+							</thead>
+							<tbody>
+							  <% for (var i = 0; i < users.length; i++) { %>
+								<tr>
+								  <th scope="row"><%= i + 1 %></th>
+								  <td><%= users[i].first_name %></td>
+								  <td><%= users[i].last_name %></td>
+								  <td><%= users[i].email %></td>
+								  <td>
+									<% if (users[i].status === 'active') { %>
+									  <button class="btn btn-danger block-unblock-btn"
+										data-userid="<%= users[i]._id %>"
+										data-status="<%= users[i].status %>"
+									  >
+										Block
+									  </button>
+									<% } else { %>
+									  <button class="btn btn-success block-unblock-btn"
+										data-userid="<%= users[i]._id %>"
+										data-status="<%= users[i].status %>"
+									  >
+										Unblock
+									  </button>
+									<% } %>
+								  </td>
+								</tr>
+							  <% } %>
+							</tbody>
+						  </table>
+                        <div class="blog-pagination mb-30">
+                            <div class="btn-toolbar justify-content-center mb-15">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+     
+<script>
+ $(document).on("click", ".block-unblock-btn", function() {
+  let userId = $(this).data("userid");
+  let status = $(this).data("status");
+  let newStatus = status === "active" ? "blocked" : "active";
+
+  if (confirm("Are you sure you want to change the user's status to " + newStatus + "?")) {
+    $.ajax({
+      type: "POST",
+      url: "/admin/updateUserStatus",
+      data: { userId: userId, status: newStatus },
+      success: function(response) {
+        location.reload()
+      },
+      error: function(error) {
+        console.error(error);
+      }
+    });
+  }
+});
+
+</script>
+
+<%- include('partials/adminfooter.ejs') %>
+

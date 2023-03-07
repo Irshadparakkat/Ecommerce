@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Order</title>
+
+  <link rel="stylesheet" type="text/css" href="/user/css/new.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+</head>
+<body>
+
+<div class="container">
+  <article class="card">
+      <header class="card-header"> My Orders / Tracking </header>
+      <div class="card-body">
+          <h6>Order ID: <%= order.orderId %> </h6>
+          
+          <p class="text-muted mb-0"> Place On <span class="fw-bold text-body"> <%= order.created.toLocaleString() %></span> </p>
+
+          <article class="card">
+              <div class="card-body row">
+                  <div class="col"> <strong>Estimated Delivery time:</strong> <br> <% var newDate = new Date(order.created.getTime() + 10 * 24 * 60 * 60 * 1000);
+                    var formattedDate = newDate.toLocaleString();
+                    %>
+                    <%= formattedDate %></div>
+                  <div class="col"> <strong>Shipping BY:</strong> <br> Coza Store <i class="fa fa-phone"></i> +91 9496876366 </div>
+                  <div class="col"> <strong>Status:</strong> <br><%=order.status%></div>
+                  <div class="col"> <strong>Total Price</strong> <br>  <%= order.total %>  </div>
+              </div>
+          </article>
+          <div class="track">
+            <%if(order.status === 'order confirmed') { %>
+              <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order confirmed</span> </div>
+              <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span> </div>
+              <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+              <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Order Delivered</span> </div>
+          
+              <% } else if (order.status === 'order dispatched') { %>
+                <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order confirmed</span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span> </div>
+                <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Order Delivered</span> </div>
+                <% } else if (order.status === 'order delivered') { %>
+                  <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order confirmed</span> </div>
+                  <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span> </div>
+                  <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                  <div class="step active"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Order Delivered</span> </div>
+                  <% } else { %>
+                    <button class="btn btn-secondary order-status-btn" 
+                      >
+                      order Cancelled
+                    </button>
+                  <% } %>
+            </div>
+          <hr>
+          <ul class="row">
+
+            <% order.items.forEach((item, index)=>{%>
+
+           
+              <li class="col-md-4">
+                  <figure class="itemside mb-3">
+                      <div class="aside"><img src="/productupload/<%= item.product.images[1] %>" class="img-sm border"></div>
+                      <figcaption class="info align-self-center">
+                          <p class="title"><%= item.product.name %> <br> <%= item.quantity %></p> <span class="text-muted"><%= item.totalprice %></span>
+                      </figcaption>
+                  </figure>
+              </li>
+              <% }) %>
+
+          </ul>
+          <hr>
+          <a href="/orders" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to orders</a>
+
+        <%if(order.status==='order delivered'){%>
+        
+          <a href="/invoice/<%= order._id %>" class="btn btn-success pull-right" >View invoice</a>
+        
+        <%}%>
+      </div>
+  </article>
+</div>
+
+
+</body>
+</html>

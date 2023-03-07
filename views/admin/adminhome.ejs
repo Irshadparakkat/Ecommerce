@@ -1,0 +1,146 @@
+<%- include('partials/adminhead.ejs') %>
+
+	<link rel="stylesheet" href="/admin/productview/mycss">
+
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js'></script>
+
+
+
+	<div class="mobile-menu-overlay"></div>
+
+	<div class="main-container">
+
+		<div class="row">
+			<div class="col-lg-7 col-md-12 col-sm-12 mb-30" style="background-color: white;">
+				<div class="card-box pd-30 height-500-p">
+					<h4 class="mb-30 h4">Sales Statics</h4>
+					
+					<div class="row my-2">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-body">
+									<canvas id="chLine" height="150"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				
+				</div>
+			</div>
+			<div class="col-lg-5 col-md-12 col-sm-12 mb-30">
+				<div class="card-box pd-30 height-100-p">
+					<h4 class="mb-30 h4">Category Wise Records</h4>
+
+					<div class="compliance-trend">
+						<canvas id="chart-line" width="50%" height="50%" class="chartjs-render-monitor"
+							style="display: block;"></canvas>
+
+					</div>
+				</div>
+			</div>
+
+
+
+
+		</div>
+
+
+
+
+	</div>
+
+
+	</div>
+
+
+
+
+	<script src="/admin/homepage/src/plugins/highcharts-6.0.7/code/highcharts.js"></script>
+	<script src="/admin/homepage/src/plugins/highcharts-6.0.7/code/highcharts-more.js"></script>
+
+
+	<script>
+		var colors = ['#007bff', '#28a745', '#333333', '#c3e6cb', '#dc3545', '#6c757d'];
+	  
+		var chLine = document.getElementById("chLine");
+		var chartData = {
+		  labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		  datasets: [{
+			label: "COD",
+			data: [],
+			backgroundColor: 'transparent',
+			borderColor: colors[0],
+			borderWidth: 4,
+			pointBackgroundColor: colors[0]
+		  }, {
+			label: "PayPal",
+			data: [],
+			backgroundColor: colors[3],
+			borderColor: colors[1],
+			borderWidth: 4,
+			pointBackgroundColor: colors[1]
+		  }]
+		};
+	  
+		fetch('/admin/payment-methods')
+		  .then(response => response.json())
+		  .then(data => {
+			chartData.datasets[0].data = data.cod;
+			chartData.datasets[1].data = data.paypal;
+			new Chart(chLine, {
+			  type: 'line',
+			  data: chartData,
+			  options: {
+				scales: {
+				  yAxes: [{
+					ticks: {
+					  beginAtZero: true
+					}
+				  }]
+				},
+				legend: {
+				  display: true
+				}
+			  }
+			});
+		  })
+		  .catch(error => {
+			console.error(error);
+		  });
+	  </script>
+
+	<script>
+		$(document).ready(async function () {
+			const response = await fetch('/admin/getCategorySales');
+			const data = await response.json();
+			const salesDataArray = [];
+			const backgroundColors = [];
+
+			Object.keys(data).forEach((category) => {
+				salesDataArray.push(data[category].totalSales);
+				backgroundColors.push(data[category].color);
+			});
+
+			var ctx = $("#chart-line");
+			var myPieChart = new Chart(ctx, {
+				type: 'pie',
+				data: {
+					labels: Object.keys(data),
+					datasets: [{
+						data: salesDataArray,
+						backgroundColor: backgroundColors
+					}]
+				},
+				options: {
+					title: {
+						display: true,
+						text: 'Category-wise Sales'
+					}
+				}
+			});
+		});
+
+	</script>
+	<!-- js -->
+	<%- include('partials/adminfooter.ejs') %>

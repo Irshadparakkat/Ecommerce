@@ -1,0 +1,43 @@
+<%- include('partials/adminhead.ejs') %>
+
+<div class="container-fluid pt-5">
+  <div class="row justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title text-center mb-4">Add Coupon</h5>
+          <form action="/admin/postaddcoupon" method="post">
+            <div class="form-floating mb-3">
+                <label for="code">Code</label>
+              <input type="text" class="form-control" id="code" placeholder="Code" name="code">
+            </div>
+            <div class="form-floating mb-3">
+                <label for="available">Availability</label>
+
+              <input type="number" class="form-control" id="available" placeholder="Availability" name="available">
+            </div>
+            <input type="hidden" name="status" value="active">
+            <div class="form-floating mb-3">
+                <label for="max-discount">Maximum Discount Amount</label>
+
+              <input type="number" class="form-control" id="max-discount" placeholder="Maximum Discount Amount" name="maxdiscountAmount">
+            </div>
+            <div class="form-floating mb-3">
+                <label for="min-cart">Minimum Cart Amount</label>
+
+              <input type="number" class="form-control" id="min-cart" placeholder="Minimum Cart Amount" name="mincartAmout">
+            </div>
+            <div class="form-floating mb-3">
+                <label for="exp-date">Expiration Date</label>
+
+              <input type="date" class="form-control" id="exp-date" placeholder="Expiration Date" name="expiredAfter">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Add Coupon</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/adminfooter.ejs') %>

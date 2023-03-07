@@ -1,0 +1,81 @@
+
+<%- include('partials/adminhead.ejs') %>
+
+	<div class="mobile-menu-overlay"></div>
+
+	<div class="main-container">
+		<div class="xs-pd-20-10 pd-ltr-20">
+			<div class="page-header">
+				<div class="row">
+					<div class="col-md-6 col-sm-12">
+						
+						<nav aria-label="breadcrumb" role="navigation">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="adminhome">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">category's</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="col-md-6 col-sm-12 text-right">
+						
+					</div>
+				</div>
+			</div>
+			
+<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Image</th>
+      <th>Category Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% categories.forEach(category => { %>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="/uploads/<%=category.image%>"
+              alt=""
+              style="width: 45px; height: 45px"
+              class="img-thumbnail"
+              />
+        </div>
+      </td>
+
+      <td>
+        <p class="fw-normal mb-1"><%= category.name %></p>
+      </td>
+      
+<td>
+        <!-- <a href="/admin/edit-category/<%= category._id %>"  type="button" class="btn btn-link btn-sm btn-rounded">Edit</a> -->
+<a href="/admin/delete-category/<%= category._id %>"  type="button" class="btn btn-link btn-sm btn-rounded" >Delete</a>     
+     
+</td>
+
+    </tr><% }); %>
+  </tbody>
+</table>
+			
+		</div>
+	</div>
+	<!-- js -->
+	<%- include('partials/adminfooter.ejs') %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

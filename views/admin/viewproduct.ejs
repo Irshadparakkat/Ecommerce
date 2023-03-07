@@ -1,0 +1,83 @@
+<%- include('partials/adminhead.ejs') %>
+
+    <link rel="stylesheet" href="/admin/productview/mycss">
+
+    
+  
+  
+  
+    <div class="container mt-5 mb-5"   style="overflow: auto;
+        margin-top: 150px; margin-right: 20px;">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-10 mt-5" style="margin-top: 100px;">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="images p-3">
+                                <div class="text-center p-4">
+                                    <img id="main-image" src=" /productupload/<%= product.images[0] %>" width="250" />
+                                </div>
+                                <div class="thumbnail text-center">
+                                    <% product.images.forEach(function(image) { %>
+                                        <img onclick="change_image(this)" src="/productupload/<%= image %>" width="70">
+                                        <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="product p-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span
+                                            class="ml-1"><a href="/admin/allproduct">Back</a></span> </div> <i
+                                        class="fa fa-shopping-cart text-muted"></i>
+                                </div>
+                                <h5 class="text-uppercase">
+                                    <%= product.name %>
+                                </h5>
+                                <div class="price d-flex flex-row align-items-center"> <span
+                                        class="act-price">$20</span>
+                                    <div class="ml-2"> <small class="dis-price">
+                                            <%= product.price %>
+                                        </small> <span>40% OFF</span> </div>
+                                </div>
+
+                                <p class="about">
+                                    <%= product.description %>
+                                </p>
+                                <div class="sizes mt-5">
+                                    <h6 class="text-uppercase">Size</h6>
+                                    <label class="radio">
+                                        <input type="radio" name="size" value="<%= product.size %>" checked>
+                                        <span>
+                                            <%= product.size %>
+                                        </span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <%- include('partials/adminfooter.ejs') %>
+
+
+
+
+<script>function change_image(image){
+
+    var container = document.getElementById("main-image");
+
+   container.src = image.src;
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function(event) {
+
+
+});</script>

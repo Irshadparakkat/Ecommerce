@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Admin Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="/admin/loginpage/css/style.css">
+
+	</head>
+	<body class="img js-fullheight" style="background-image: url(/admin/loginpage/images/bg.jpg);">
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<h2 class="heading-section">Admin Login Page</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-6 col-lg-4">
+					<div class="login-wrap p-0">
+		      	<h3 class="mb-4 text-center">Welcome</h3>
+		      	<form class="signin-form " action="/admin/adminhome" name="f1" method="post"  onsubmit="return validate()" autocomplete="off"   >
+		      		<div class="form-group">
+		      			<input type="text" name="email" class="form-control" placeholder="Username" required>
+						  <div class="text-white"  style="font-size: large;font-weight: bolder;"  id="emailerror"></div>
+		      		</div>
+	            <div class="form-group">
+	              <input id="password-field" name="password" type="password" class="form-control" placeholder="Password" required>
+				  <div class="text-white"  style="font-size: large;font-weight: bolder;" id="passworderror"></div>
+	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+	            </div>
+				<% if (error) { %>
+					<div class="text-white"  style="font-size: large;font-weight: bolder;"><%= error %></div>
+				  <% } %>
+	            <div class="form-group">
+	            	<button class="form-control btn btn-primary submit px-3">Sign In</button>
+	            </div>
+				
+
+	          </form>
+	         
+		      </div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="/admin/loginpage/js/jquery.min.js"></script>
+  <script src="/admin/loginpage/js/popper.js"></script>
+  <script src="/admin/loginpage/js/bootstrap.min.js"></script>
+  <script src="/admin/loginpage/js/main.js"></script>
+<script>
+function validate() {
+  // Get form inputs
+  const emailInput = document.forms["f1"]["email"];
+  const passwordInput = document.forms["f1"]["password"];
+
+  // Check if email is valid
+  const emailRegex = /^\S+@\S+\.\S+$/;
+  if (!emailRegex.test(emailInput.value)) {
+    document.getElementById("emailerror").innerHTML = "Please enter a valid email address";
+    emailInput.focus();
+    return false;
+  }
+
+  // Check if password is at least 8 characters long
+  if (passwordInput.value.length < 5) {
+    document.getElementById("passworderror").innerHTML = "Password must be at least 5 characters long";
+    passwordInput.focus();
+    return false;
+  }
+
+  // If both inputs are valid, return true to submit the form
+  return true;
+}
+
+</script>
+	</body>
+</html>

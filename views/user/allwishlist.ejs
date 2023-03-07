@@ -1,0 +1,77 @@
+<%- include('userpartials/userhead.ejs') %>
+
+<div class="cart-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="main-heading mb-10"></div>
+                <div class="table-wishlist" style="margin-top: 70px;">
+                    <table cellpadding="0" cellspacing="0"  border="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="45%">Product Details</th>
+
+                                <th width="15%">Unit Price</th>
+                                <th width="15%">Stock Status</th>
+                                <th width="15%"></th>
+                                <th width="10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (wishlist==null|| wishlist.length===0  ) { %>
+
+                              <tr>
+                                <td>
+                            <h5 style="margin-left: 200px; color: red;">Your wishlist is empty.</h5>
+                          </td>
+                              </tr>
+                              <% } else { %>
+                                <% wishlist.forEach((product) => { %>
+                                    <tr  data-id="<%= product.name %>">
+                                      <td width="45%">
+                                        <div class="display-flex align-center">
+                                          <div class="img-product">
+                                            <img src="/productupload/<%= product.image %>" alt="" class="mCS_img_loaded">
+                                          </div>
+                                          <div class="name-product">
+                                            <%= product.name %>
+
+
+                                              
+                                          </div>
+                                          <select class="product-size" name="size"  >
+                                            <% product.sizes.forEach((size) => { %>
+                                              <option value="<%= size %>"><%= size %></option>
+                                            <% }) %>
+                                          </select>
+                                      
+                                        </div>
+                                      </td>
+                                      <td width="15%" class="price"><%= product.price %></td>
+                                      <% if (product.stock > 0) { %>
+                                        <td width="15%"><span class="in-stock-box">In Stock</span></td>
+                                      <% } else { %>
+                                        <td width="15%"><span class="out-stock-box">Out of Stock</span></td>
+                                      <% } %>
+                                    
+                                        <td width="15%">
+                                        <button class="round-black-btn small-btn"   onclick="addtoCart('<%=product.name %>', document.querySelector('select[name=\'size\']').value)">Add to Cart</button>
+                                      </td>
+                                      <td width="10%" class="text-center"><button class="trash-icon"><i class="far fa-trash-alt"></i></button></td>
+                                    </tr>
+                                  <% }); %>
+                                  
+
+                            <% } %>
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('userpartials/userfooter.ejs') %>
+

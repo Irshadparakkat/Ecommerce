@@ -1,0 +1,414 @@
+<%- include('userpartials/userhead.ejs') %>
+
+
+	<!-- breadcrumb -->
+	
+	<!-- Shoping Cart -->
+	<form class="bg0 p-t-75 p-b-85">
+
+
+		<div class="container">
+			<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+				<a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+					Home
+					<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+				</a>
+	
+				<span class="stext-109 cl4">
+					Shoping Cart
+				</span>
+			</div>
+		</div>
+	
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+					<div class="m-l-25 m-r--38 m-lr-0-xl">
+						<div class="wrap-table-shopping-cart">
+							<table class="table-shopping-cart">
+								<tr class="table_head">
+									<th class="column-1">Product</th>
+									<th class="column-2" style="text-align: center;"></th>
+									<th class="column-3">Price</th>
+									<th class="column-4" style="text-align: center">Quantity</th>
+									<th class="column-5">Total</th>
+									<th class="column-6" style="text-align: center">Action</th>
+								</tr>
+						</div>
+						<% for(cart of cartitems.items){ %>
+
+							<tr class="table_row" data-product-id="<%=cart.product._id%>"
+								data-product-size="<%= cart.size %>">
+								<td class="column-1">
+									<div class="how-itemcart1">
+										<img src="/productupload/<%= cart.product.images[1] %>" alt="IMG">
+									</div>
+								</td>
+								<td class="column-2">
+									<%= cart.product.name %>
+
+										<p>Size: <%= cart.product.size %>
+										</p>
+										<h6 style="font-weight: bold;color: red;" id="message">
+
+										</h6>
+								</td>
+								<td class="column-3" id="price">$.<%= cart.product.price %>
+								</td>
+								<td class="column-4" style="text-align: center">
+									<div class="wrap-num-product flex-w m-l-auto m-r-0">
+										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+											onclick="changeQuantity('<%-cartitems._id-%>','<%-cart.product._id-%>','-1','<%= cart.size %>')">
+											<i class="fs-16 zmdi zmdi-minus"></i>
+										</div>
+										<input class="mtext-104 cl3 txt-center num-product" type="number" min="1"
+											max="10" id="myfield" name="num-product1" value="<%= cart.quantity %>">
+										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+											onclick="changeQuantity('<%-cartitems._id-%>','<%-cart.product._id-%>','1','<%= cart.size %>')">
+											<i class="fs-16 zmdi zmdi-plus"></i>
+										</div>
+									</div>
+
+								</td>
+
+								<td class="column-5" name="total">$ <%= cart.totalprice %>
+								</td>
+
+								<td>
+									<a href="" onclick="removefromcart('<%= cart.product._id %>','<%= cart.size %>')"
+										class="btn btn-warning">Remove</a>
+								</td>
+
+							</tr>
+
+
+
+							<% } %>
+
+								</table>
+
+
+					</div>
+
+
+					<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+						<div class="flex-w flex-m m-r-20 m-tb-5">
+							<input  style="display: none;" class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
+								id="validcoupen" onchange="coupenpost(this.value)" name="coupon"
+								placeholder="Coupon Code">
+
+							
+						</div>
+
+						<!-- <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+                                Update Cart
+                              </div> -->
+
+
+
+
+					</div>
+					<div>
+						<h6 style="font-weight: bold;color: green;" id="coupen">
+
+						</h6>
+
+
+						<h6 style="font-weight: bold;color: red;" id="coupenerr">
+
+						</h6>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+				<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+					<h4 class="mtext-109 cl2 p-b-30">
+						Cart Totals
+					</h4>
+
+					<div class="flex-w flex-t bor12 p-b-13">
+						<div class="size-208">
+							<span class="stext-110 cl2">
+								Total amount:
+							</span>
+						</div>
+
+						<div class="size-209">
+							<span class="mtext-110 cl2" id="subtotal">
+								<%= cartitems.cartTotal%>
+							</span>
+						</div>
+					</div>
+					<br>
+					<span class="stext-110 cl2">
+						<h5 class="text-success text-center">
+							Discount Details</h5>
+					</span>
+
+					<div>
+						<table class="table">
+							<thead>
+								<!-- <tr>
+									<th scope="col">First</th>
+									<th scope="col">Last</th>
+									<th scope="col">Handle</th>
+								  </tr> -->
+							</thead>
+							<tbody>
+								<tr>
+									<td>Coupon applied</td>
+									<td id="Discount">-</td>
+								</tr>
+								<tr>
+									<td>GST</td>
+									<td>18%</td>
+								</tr>
+
+							</tbody>
+						</table>
+
+
+					</div>
+
+
+
+					<div class="flex-w flex-t p-t-27 p-b-33">
+
+						<span class="mtext-101 cl2">
+							Total : &nbsp; Rs &nbsp;
+						</span>
+
+
+						<div class="size-209 p-t-1">
+							<span class="mtext-110 cl2" id="Payable">
+								<%= (0.18*cartitems.cartTotal+cartitems.cartTotal).toFixed(2) %>
+
+							</span>
+						</div>
+					</div>
+					<div class="flex-w flex-t bor12 p-t-15 p-b-30">
+
+						<a href="/checkout" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04">
+							
+							  Proceed to Checkout
+							
+						  </a>
+						  
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		</div>
+		</div>
+	</form>
+
+	<!-- Footer -->
+	<footer class="bg3 p-t-75 p-b-32">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						Categories
+					</h4>
+
+					<ul>
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Women
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Men
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Shoes
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Watches
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						Help
+					</h4>
+
+					<ul>
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Track Order
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Returns
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								Shipping
+							</a>
+						</li>
+
+						<li class="p-b-10">
+							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+								FAQs
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						GET IN TOUCH
+					</h4>
+
+					<p class="stext-107 cl7 size-201">
+						Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us
+						on (+1) 96 716 6879
+					</p>
+
+					<div class="p-t-27">
+						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+							<i class="fa fa-facebook"></i>
+						</a>
+
+						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+							<i class="fa fa-instagram"></i>
+						</a>
+
+						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+							<i class="fa fa-pinterest-p"></i>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-sm-6 col-lg-3 p-b-50">
+					<h4 class="stext-301 cl0 p-b-30">
+						Newsletter
+					</h4>
+
+					<form>
+						<div class="wrap-input1 w-full p-b-4">
+							<input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email"
+								placeholder="email@example.com">
+							<div class="focus-input1 trans-04"></div>
+						</div>
+
+						<div class="p-t-18">
+							<button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+								Subscribe
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="p-t-40">
+				<div class="flex-c-m flex-w p-b-18">
+					<a href="#" class="m-all-1">
+						<img src="/user/images/icons/icon-pay-01.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="/user/images/icons/icon-pay-02.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="/user/images/icons/icon-pay-03.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="/user/images/icons/icon-pay-04.png" alt="ICON-PAY">
+					</a>
+
+					<a href="#" class="m-all-1">
+						<img src="/user/images/icons/icon-pay-05.png" alt="ICON-PAY">
+					</a>
+				</div>
+
+				<p class="stext-107 cl6 txt-center">
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					Copyright &copy;
+					<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i
+						class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+						target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com"
+						target="_blank">ThemeWagon</a>
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+				</p>
+			</div>
+		</div>
+	</footer>
+
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+
+	<!--===============================================================================================-->
+	<script src="/user/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="/user/vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="/user/vendor/bootstrap/js/popper.js"></script>
+	<script src="/user/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="/user/vendor/select2/select2.min.js"></script>
+	<script>
+		$(".js-select2").each(function () {
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+		})
+	</script>
+	<!--===============================================================================================-->
+	<script src="/user/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="/user/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+
+	<script>
+
+		async function proceedCheckout(id) {
+			const total = document.getElementById("total").innerHTML;
+
+			try {
+				const response = await fetch(`/checkout?user=${id}&total=${total}`);
+				const data = await response.json();
+				console.log(data);
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	</script>
+
+	<script src="/user/js/cart.js"></script>
+
+
+	<!--===============================================================================================-->
+	<script src="/user/js/main.js"></script>
+
+	</body>
+
+	</html>

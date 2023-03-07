@@ -1,0 +1,213 @@
+
+<%- include('userpartials/userhead.ejs') %>
+
+
+<section style="background-color: #eee; ">
+  <div class="container py-5"  >
+   
+
+    <div class="row"  style="margin-top: 50px;">
+      <div class="col-lg-4">
+        <% if (userAddress == null || findaddress.length == 0 ) { %>
+          <div class="alert alert-danger" role="alert" style="width: 250px; height: 60px;">
+            Please Add Address!
+          </div>
+          <% }else{ %>
+            <% for(let i =0;i<findaddress.length;i++){ %>
+
+       
+        <div class="card mb-4">
+         
+          <div class="card-body text-center">
+            <h5 class="my-3"><%= findaddress[i].name %></h5>
+            <p><%= findaddress[i].city %> </p>
+            <p><%= findaddress[i].state %> </p>
+            <p><%= findaddress[i].phone %> </p>
+            <p><%= findaddress[i].pin %> </p>  
+            <p><%= findaddress[i].address %> </p>  
+  
+          </div>
+           
+           
+        </div>
+
+        <% } %>  
+        <% } %>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%=user.first_name%><%=user.last_name%></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%=user.email%></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Phone</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%=user.phone%></p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%=user.phone%></p>
+              </div>
+            </div>
+            <a href="" type="button" id="editbtn1" class="btn btn-primary js-show-modal1  ">Add Address</a>
+
+          </div>
+        </div>
+      
+         
+        
+        </div>
+      </div>
+    </div>
+  </div>
+  
+           
+
+
+  <div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
+    <div class="overlay-modal1 js-hide-modal1"></div>
+
+    <div class="container">
+        <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+            <button class="how-pos3 hov3 trans-04 js-hide-modal1">
+                <img src="/user/images/icons/icon-close.png" alt="CLOSE">
+            </button>
+            <div class="container">
+                <form id="addressform"  autocomplete="off">
+                    <!-- 2 column grid layout with text inputs for the first and last names -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="formName">Name</label>
+                            <input type="text" class="form-control" id="formName" name="name"
+                                placeholder="Enter your name" onchange="validateForm()">
+
+                            <small class="form-text text-danger" id="nameError"></small>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="formEmail">Email</label>
+                            <input type="email" class="form-control" id="formEmail" name="email"
+                                placeholder="Enter your email" onchange="validateForm()">
+                            <small class="form-text text-danger" id="emailError"></small>
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="formPhone">Phone</label>
+                            <input type="number" class="form-control" id="formPhone" name="phone"
+                                placeholder="Enter your phone number" onchange="validateForm()">
+                            <small class="form-text text-danger" id="phoneError"></small>
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="formState">State</label>
+                            <input type="text" class="form-control" id="formState" name="state"
+                                placeholder="Enter your state" onchange="validateForm()">
+                            <small class="form-text text-danger" id="stateError"></small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="formCity">City</label>
+                            <input type="text" class="form-control" id="formCity" name="city"
+                                placeholder="Enter your city" onchange="validateForm()">
+                            <small class="form-text text-danger" id="cityError"></small>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="formPin">Pin</label>
+                            <input type="number" class="form-control" id="formPin" name="pin"
+                                placeholder="Enter your pin code" onchange="validateForm()">
+                            <small class="form-text text-danger" id="pinError"></small>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="formAddress">Address</label>
+                        <textarea class="form-control" id="formAddress" name="address" rows="3"
+                            placeholder="Enter your address" onchange="validateForm()"></textarea>
+                        <small class="form-text text-danger" id="addressError"></small>
+                    </div>
+                    <button type="button" id="savebtn" style="display: none;"
+                        class="btn btn-success btn-block mt-3">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</section>
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+  <span class="symbol-btn-back-to-top">
+      <i class="zmdi zmdi-chevron-up"></i>
+  </span>
+</div>
+
+<!--===============================================================================================-->
+<script src="/user/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="/user/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="/user/vendor/bootstrap/js/popper.js"></script>
+<script src="/user/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/user/vendor/select2/select2.min.js"></script>
+<script>
+  $(".js-select2").each(function () {
+      $(this).select2({
+          minimumResultsForSearch: 20,
+          dropdownParent: $(this).next('.dropDownSelect2')
+      });
+  })
+</script>
+<!--===============================================================================================-->
+<script src="/user/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<!--===============================================================================================-->
+<script src="/user/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+
+
+
+
+<!--===============================================================================================-->
+<script src="/user/js/main.js"></script>
+
+<script src="/user/js/profile.js"></script>
+
+
+<%- include('userpartials/userfooter.ejs') %>
+
+
+
+
+
+</body>
+
+</html>

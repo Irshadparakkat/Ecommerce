@@ -1,0 +1,70 @@
+<%- include('partials/adminhead.ejs') %>
+
+
+
+    <div class="mobile-menu-overlay"></div>
+
+    <div class="main-container">
+        <div class="pd-ltr-20 xs-pd-20-10">
+            <div class="min-height-200px">
+                
+                <div class="card-box mb-30">
+                    <h2 class="h4 pd-20">All Banner</h2>
+                    <table class="data-table table nowrap">
+                        <thead>
+
+                            <tr>
+                                <th class="table-plus datatable-nosort">Sl No</th>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                              
+                                <th>Action</th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% Banner.forEach((element,i)=>{ %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= i+1 %>
+                                    </th>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                          <img
+                                              src="/banner/<%=element.image%>"
+                                              alt=""
+                                              style="width: 45px; height: 45px"
+                                              class="img-thumbnail"
+                                              />
+                                        </div>
+                                      </td>
+
+
+                                    <td>
+                                        <%= element.title %>
+                                    </td>
+                                    <td>
+                                        <%= element.description %>
+                                    </td>
+                                    
+
+
+                                    <td>
+                                        <a href="/admin/deletbanner/<%= element._id %>"
+                                            onclick="return confirm('Are you sure')" class="btn btn-danger">Delete</a>
+                                    </td>
+
+                                </tr>
+                                <% }) %>
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <a href="addnewbanner"  class="btn btn-primary">Add-Banner</a>
+            </div>
+        </div>
+
+        <%- include('partials/adminfooter.ejs') %>

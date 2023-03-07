@@ -1,0 +1,143 @@
+<%- include('userpartials/userhead.ejs') %>
+
+	<!-- Product -->
+	<section class="bg0 p-t-23 "  style="margin-top: 50px;">
+		<div class="container">
+			
+			<div class="flex-w flex-sb-m p-b-52">
+				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
+					<a href="/allproducts" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 ">All Products</a>
+
+
+					<% categories.forEach(category=> { %>
+
+						<a href="/filterallproduct/<%=category.name %>" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
+							data-filter=".women">
+							<%= category.name %>
+						</a>
+
+						<%})%>
+				</div>
+
+				<div class="flex-w flex-c-m m-tb-10">
+
+					<div
+						class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+						<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+						<i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Search
+					</div>
+				</div>
+				
+				<!-- Search product -->
+				<div class="dis-none panel-search w-full p-t-10 p-b-15">
+					<div class="bor8 dis-flex p-l-15">
+						<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+							<i class="zmdi zmdi-search"></i>
+						</button>
+
+						<input type="text" id="search-input" placeholder="Search products...">
+
+					</div>
+				</div>
+
+				<!-- Filter -->
+				
+			</div>
+
+			
+					  
+			<div  id="products-section"  class="row isotope-grid">
+				<% products.forEach(product=> { %>
+
+					<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+						<div class="block2">
+							<div class="block2-pic hov-img0">
+								<img src="/productupload/<%= product.images[1] %>" alt="IMG-PRODUCT">
+								<a href="/productview/<%= product._id %>"
+									class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
+									title="View Product <%= product.name %>">
+									View
+								</a>
+							</div>
+							<div class="block2-txt flex-w flex-t p-t-14">
+								<div class="block2-txt-child1 flex-col-l">
+									<a href="/productview/<%= product._id %>"
+										class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+										<%= product._id %>
+									</a>
+									<s>$.<%= (product.price * 0.45 + product.price).toFixed(2) %></s>
+									<span class="stext-105 cl3">
+										$.<%= product.price %>
+									</span>
+								</div>
+								<div class="block2-txt-child2 flex-r p-t-3">
+									<% if (user) { %>
+										<% if (wishlist) { %>
+											<% const isWishlist=wishlist.items && wishlist.items.some(item=>
+												item.product._id.toString() === product._id.toString()); %>
+												<% if (isWishlist) { %>
+													<button id="wishlist-btn-<%= product._id %>"
+														class="btn-addwish-b2 dis-block pos-relative  js-addwish-b2"
+														onclick="addWishList('<%= product._id %>')">
+														<img class="icon-heart1 dis-block trans-04"
+															src="/user/images/icons/icon-heart-01.png" alt="fs">
+														<img class="icon-heart2 dis-block trans-04 ab-t-l"
+															src="/user/images/icons/icon-heart-02.png"
+															alt="ICON">
+
+													</button>
+													<% } else { %>
+														<button id="wishlist-btn-<%= product._id %>"
+															class="btn-addwish-b2 dis-block pos-relative"
+															onclick="addWishList('<%= product._id %>')">
+															<img class="icon-heart1 dis-block trans-04"
+																src="/user/images/icons/icon-heart-01.png"
+																alt="ICON">
+															<img class="icon-heart2 dis-block trans-04 ab-t-l"
+																src="/user/images/icons/icon-heart-02.png"
+																alt="sd">
+														</button>
+														<% } %>
+															<% } else { %>
+																<button id="wishlist-btn-<%= product._id %>"
+																	class="dis-block pos-relative "
+																	onclick="addWishList('<%= product._id %>')">
+																	<img class="icon-heart1 dis-block trans-04"
+																		src="/user/images/icons/icon-heart-01.png"
+																		alt="ICON">
+
+																</button>
+																<% } %>
+																	<% } else { %>
+
+																		<% } %>
+								</div>
+
+
+							</div>
+						</div>
+					</div>
+					<% }) %>
+			</div>
+
+				
+
+			<!-- Load more -->
+			
+		</div>
+	</section>
+
+
+	<!-- Footer -->
+
+
+	<script src="/user/js/productSearch.js"></script>
+
+		
+	<%- include('userpartials/userfooter.ejs') %>
+
+	<script src="/user/js/wishlist.js"></script>
+
+</body>
+</html>
