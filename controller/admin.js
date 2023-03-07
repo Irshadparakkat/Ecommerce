@@ -19,10 +19,12 @@ module.exports.get_adminlog = (req, res) => {
   res.render("admin/adminlogin", { error: req.flash('error') })
 }
 
-const adminemail =process.env.adminemail;
+const adminemail =process.env.adminusername
 const adminpassword = process.env.adminpassword
 
 module.exports.post_adminlog = (req, res) => {
+
+ 
   let email = req.body.email
   let password = req.body.password
 
@@ -30,7 +32,6 @@ module.exports.post_adminlog = (req, res) => {
     'email': email,
     'password': password
   }
-  console.log(data)
   if (adminemail == data.email && adminpassword == data.password) {
     req.session.adminauthenticated = true;
     req.session.username = req.body.email;
