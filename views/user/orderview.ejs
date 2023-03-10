@@ -51,12 +51,18 @@
                   <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span> </div>
                   <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
                   <div class="step active"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Order Delivered</span> </div>
-                  <% } else { %>
-                    <button class="btn btn-secondary order-status-btn" 
-                      >
-                      order Cancelled
-                    </button>
-                  <% } %>
+                  <% } else  if(order.status === 'order returned') { %>
+                    <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order Return requested</span> </div>
+                  <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Pending </span> </div>
+                  <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Order Return Approved</span> </div>
+                  <% } else { %> 
+                    
+                    <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order Return requested</span> </div>
+                  <div class="step active" > <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Pending </span> </div>
+                  <div class="step active"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Order Return Approved</span> </div>
+                    
+                    
+                    <% } %>
             </div>
           <hr>
           <ul class="row">

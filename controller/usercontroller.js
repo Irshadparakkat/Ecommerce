@@ -83,6 +83,8 @@ module.exports.get_userhome = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+    res.redirect('/error') 
+
   }
 };
 
@@ -131,6 +133,8 @@ module.exports.get_productview = async (req, res) => {
       }
     }).catch((err) => {
       console.log(err)
+      res.redirect('/error') 
+
     });
 };
 
@@ -252,6 +256,8 @@ module.exports.post_signuppage = async (req, res) => {
   } catch (err) {
 
     console.log(err);
+    res.redirect('/error') 
+
 
   }
 }
@@ -300,6 +306,8 @@ if(userAddress){
   catch(err){
 
     console.log(err)
+    res.redirect('/error') 
+
 
   }
   
@@ -391,6 +399,8 @@ module.exports.get_allproducts = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+    res.redirect('/error') 
+
   }
 }
 
@@ -440,7 +450,10 @@ module.exports.get_productbyfilterall = async (req,res) =>{
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/error') 
     res.status(500).send("An error occurred.");
+ 
+
   }
 
 } 
@@ -494,6 +507,7 @@ module.exports.get_productbyfilter = async (req,res) =>{
     }
   } catch (error) {
     console.log(error);
+    res.redirect('/error') 
     res.status(500).send("An error occurred.");
   }
 
@@ -544,26 +558,41 @@ module.exports.addto_wishlist = async (req, res) => {
     
   } catch (err) {
     console.error(err);
+    res.redirect('/error') 
     res.status(500).json({ error: 'Server error' });
   }
 };
 
-
 module.exports.get_searchResult = async (req, res) => {
   try {
     const searchTerm = req.query.term;
-    const regex = new RegExp(searchTerm, 'i');
-    const products = await Product.aggregate([
-      { $match: { name: regex } },
-      { $project: { _id: 1, name: 1, price: 1, images: { $arrayElemAt: ['$images', 0] } } },
-      { $group: { _id: "$name", products: { $push: { _id: "$_id", name: "$name", price: "$price", image: "$images" } } } }
-    ]);
-    res.json(products);
+
+    const matchingProducts = await Product.find({ name: { $regex: searchTerm, $options: 'i' } }).lean();
+
+    const groupedProducts = {};
+    matchingProducts.forEach(product => {
+      if (groupedProducts[product.name]) {
+        groupedProducts[product.name].sizes.push(product.size);
+      } else {
+        groupedProducts[product.name] = {
+          ...product,
+          sizes: [product.size]
+        };
+        delete groupedProducts[product.name].size;
+      }
+    });
+
+    const matchedProducts = Object.values(groupedProducts);
+
+    res.json({ products: matchedProducts });
   } catch (err) {
     console.log(err);
+    res.redirect('/error') 
     return res.status(500).send();
   }
-}
+};
+
+
 
 
 
@@ -615,6 +644,7 @@ module.exports.get_wishlist = async (req, res) => {
 
   } catch (err) {
     console.log(err);
+    res.redirect('/error') 
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -639,6 +669,7 @@ module.exports.Delete_wishlist = async (req,res)=>{
     res.sendStatus(204); // No content
   } catch (error) {
     console.error(error);
+    res.redirect('/error') 
     res.status(500).send('Error deleting item from wishlist');
   }
 
@@ -718,6 +749,7 @@ module.exports.post_cartview = async (req, res) => {
     res.json({ status: true });
   } catch (error) {
     console.log(error);
+    res.redirect('/error') 
   }
 };
 
@@ -744,6 +776,7 @@ module.exports.get_cartview = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    res.redirect('/error') 
   }
 };
 
@@ -809,9 +842,9 @@ module.exports.update_cart = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error updating cart' });
+
   }
 };
-
 
 
 
@@ -849,7 +882,12 @@ module.exports.delete_fromthecart = async (req, res) => {
       { new: true }
     );
 
-    return res.status(200).json({ message: 'Success' });
+    const newCart = await Cart.findOne({owner : userid})
+
+    const cartTotal = newCart.cartTotal;
+    
+   
+    return res.status(200).json({ message: 'Success' ,cartTotal :cartTotal});
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error removing from cart' });
@@ -857,26 +895,7 @@ module.exports.delete_fromthecart = async (req, res) => {
 };
 
 
-// const couponCheck = async (req, res) => {
 
-//   let userid = req.body.user;
-//   const total = parseInt(req.body.carttotal);
-
-//   const validcoupon = await coupondb.findOne({ code: req.body.couponcode });
-
-//   if (validcoupon.mincartAmout > total) {
-//     res.json({ data: true });
-//   } else if (validcoupon && validcoupon.mincartAmout <= total) {
-
-//     const redeem = validcoupon.maxdiscountAmount;
-//     const redeemedTotal = total - redeem;
-//     res.json({ status: true, redeemedTotal, redeem ,total });
-
-
-//   } else {
-//     res.json({ status: false, message: "Invalid Coupon" });
-//   }
-// };
 
 
 module.exports.coupen_check = async (req, res) => {
@@ -1193,18 +1212,18 @@ module.exports.paypalpayment = async (req, res) => {
         {
           amount: {
             currency_code: "USD",
-            value: total.toFixed(2),
+            value: total.toFixed(0),
             breakdown: {
               item_total: {
                 currency_code: "USD",
-                value: subtotal.toFixed(2),
+                value: subtotal.toFixed(0),
               }, discount: {
                 currency_code: "USD",
-                value: discount.toFixed(2),
+                value: discount.toFixed(0),
               },
               tax_total: {
                 currency_code: "USD",
-                value: gst.toFixed(2),
+                value: gst.toFixed(0),
               },
             
             },
@@ -1214,7 +1233,7 @@ module.exports.paypalpayment = async (req, res) => {
               name: item.product.name,
               unit_amount: {
                 currency_code: "USD",
-                value: item.product.price.toFixed(2),
+                value: item.product.price.toFixed(0),
               },
               quantity: item.quantity,
             };
@@ -1244,13 +1263,15 @@ module.exports.get_purchaseOrder= async(req,res)=>{
     const user = await User.findOne({ _id: userId });
     const cart = await Cart.findOne({ owner: userId }).populate("items.product");
      // Find all orders for the user and populate the "items.product" field
-     const orders = await Order.find({ user: userId }).populate("items.product");
-   
+     const orders = await Order.find({ user: userId }).populate("items.product").sort({ created: -1 });
+
     res.render('user/order',{cart,user,orders})
 
   }catch(e){
 
 console.log(e);
+
+res.redirect('/error') 
 
   }
 
@@ -1274,6 +1295,7 @@ module.exports.get_singleOrder= async(req,res)=>{
   } catch (error) {
 
     console.log(error);
+    res.redirect('/error') 
    
   }
 
@@ -1300,7 +1322,23 @@ module.exports.get_cancelOrder = async (req, res) => {
     res.redirect('/orders');
   } catch (err) {
     console.log(err);
+    res.redirect('/error') 
+   
     res.status(500).send('Error cancelling order');
+  }
+}
+
+
+module.exports.updateOrder = async (req,res)=>{
+  try {
+    const orderId = req.body.orderId;
+    const updatedOrder = await Order.findOneAndUpdate({orderId:orderId}, { status: 'order returned' }, { new: true });
+    res.status(200).json({ message: "Order updated successfully", data: updatedOrder });
+  } catch (error) {
+    console.log(error);
+    res.redirect('/error') 
+   
+    res.status(500).json({ error: error });
   }
 }
 
@@ -1337,6 +1375,8 @@ module.exports.get_invoice =async (req,res)=>{
     res.render('user/invoice', {order,Coupen ,finalAddress });
   } catch (error) {
 
+    res.redirect('/error') 
+
     console.log(error);
    
   }
@@ -1350,6 +1390,37 @@ module.exports.get_invoice =async (req,res)=>{
 module.exports.get_logout = (req, res) => {
   req.session.destroy()
   res.redirect('/')
+
+}
+
+module.exports.get_errorpage = async (req,res)=>{
+
+  if (req.session.authenticated) {
+    const email = req.session.username;
+
+    // Find the user
+    const user = await User.findOne({ email: email });
+
+    // Check if user is active
+    if (user.status === 'active') {
+
+      // Find the cart of the user and populate the product items
+      const cart = await Cart.findOne({ owner: user._id }).populate("items.product");
+
+      // Find the wishlist of the user if it exists and populate the products
+    
+      // Render the userhome view with products, categories, user, cart, and wishlist
+      res.render('user/errorpage', { user, cart, });
+
+    } else {
+      req.flash('error', "Your account is blocked");
+      res.redirect('/login');
+    }
+
+  } else {
+    // Render the userhome view with products and categories, without user and cart information
+    res.render('user/errorpage', {  user: null, cart: null });
+  }
 
 }
 

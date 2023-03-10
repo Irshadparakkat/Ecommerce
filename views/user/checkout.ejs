@@ -681,10 +681,12 @@
 
 
             paymentSelector.addEventListener('change', () => {
-                if (paymentSelector.value === 'paypal') {
+                if (paymentSelector.value == 'paypal') {
                     paypalButtonContainer.style.display = 'block';
                 } else if (paymentSelector.value == 'cod') {
                     button.style.display = "block";
+                    paypalButtonContainer.style.display = 'none';
+
                 }
 
                 else {

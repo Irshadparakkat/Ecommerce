@@ -1,4 +1,3 @@
-
 const changeQuantity = (cartItemId, productId, quantity, size) => {
 
   const fieldqty = document.querySelector(`tr[data-product-id="${productId}"][data-product-size="${size}"] input[id="myfield"]`);
@@ -7,8 +6,7 @@ const changeQuantity = (cartItemId, productId, quantity, size) => {
     const checkqty = parseInt(fieldqty.value) + parseInt(quantity);
 
     
-     console.log(fieldqty.value);
-
+  
     if (checkqty < 1) {
       removefromcart(productId,size);
     } else {
@@ -38,11 +36,14 @@ const changeQuantity = (cartItemId, productId, quantity, size) => {
   
               // Update the total for the specific cart item
               const itemTotalEl = document.querySelector(`tr[data-product-id="${productId}"][data-product-size="${size}"] td[name="total"]`);
-              itemTotalEl.innerHTML = `Rs. ${subtotal}`;
+              itemTotalEl.innerHTML = ` ${subtotal}`;
   
               const itemMessage = document.querySelector(`tr[data-product-id="${productId}"][data-product-size="${size}"] h6[id="message"]`);
   
               itemMessage.innerHTML = "";
+
+              const checkoutBtn = document.getElementById('checkingout');
+              checkoutBtn.style.display = 'block'
   
               payable(0);
   
@@ -53,12 +54,13 @@ const changeQuantity = (cartItemId, productId, quantity, size) => {
               }
   
             } else {
-              console.error(data.message);
-  
+            
               const itemMessage = document.querySelector(`tr[data-product-id="${productId}"][data-product-size="${size}"] h6[id="message"]`);
   
+              const checkoutBtn = document.getElementById('checkingout');
               itemMessage.innerHTML = data.message;
 
+              checkoutBtn.style.display = 'none';
 
               const cartTotal = data.cartTotal;
               const subtotal = data.subtotal;
@@ -68,7 +70,7 @@ const changeQuantity = (cartItemId, productId, quantity, size) => {
   
               // Update the total for the specific cart item
               const itemTotalEl = document.querySelector(`tr[data-product-id="${productId}"][data-product-size="${size}"] td[name="total"]`);
-              itemTotalEl.innerHTML = `Rs. ${subtotal}`;
+              itemTotalEl.innerHTML = ` ${subtotal}`;
   
   
               payable(0);
@@ -80,31 +82,54 @@ const changeQuantity = (cartItemId, productId, quantity, size) => {
         .catch(error => console.error(error));
     }
   };
-  
 
-async function removefromcart(id,size) {
+  const removeButtons = document.querySelectorAll('[id^="delete-"]');
 
-   
+removeButtons.forEach(button => {
+  button.addEventListener("click", function(event) {
+    event.preventDefault();
+    const [_, id, size] = button.id.split('-');
+    removefromcart(id, size);
+  });
+});
+
+async function removefromcart(id, size) {
   await fetch(`/removefromcart`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({productid: id,size})
-  }).then(response=>{
-	if(response.status === 400){
-		return response.json().then(data=>{
-			alert(data.message)
-		})
-	}
-	else{
-		location.reload();
-	}
-  }).catch(error=>{
-	console.error(error);
+    body: JSON.stringify({ productid: id, size })
   })
-    
+  .then(response => {
+    if (response.status === 400) {
+      return response.json().then(data => {
+        alert(data.message)
+      })
+    } else {
+      const rowToRemove = document.querySelector(`tr[data-product-id="${id}"][data-product-size="${size}"]`);
+      rowToRemove.remove();
+      return response.json();
+    }
+  })
+  .then(data => {
+    const cartTotal = data.cartTotal;
+    document.getElementById('subtotal').innerHTML = cartTotal;
+
+    payable(0)
+    if (cartTotal === 0) {
+      window.location.reload();
+    }
+  })
+  .catch(error => {
+    console.error(error);
+  })
 }
+
+  
+
+  
+  
 
 async function coupenpost(coupenCode){
 
@@ -180,9 +205,8 @@ function payable(discount) {
 
   console.log(tax);
  
-  const payableAmount = (parseInt(TotalAmount) + tax - discount).toFixed(2);
+  const payableAmount = (parseInt(TotalAmount) + tax - discount).toFixed(0);
 
-console.log(TotalAmount);
   document.getElementById('Payable').innerHTML = payableAmount;
 }
 

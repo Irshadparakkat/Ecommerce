@@ -64,6 +64,7 @@ router.post('/applyingcoupen',uscontroller.applyingcoupen)
 
 router.get('/checkout',verifyingUser,uscontroller.get_checkoutpage)
 
+router.post('/return-order',verifyingUser,uscontroller.updateOrder)
 
 router.post('/addresspost',uscontroller.postaddress)
 
@@ -87,5 +88,7 @@ router.get('/cancelorder/:orderId',verifyingUser,uscontroller.get_cancelOrder)
 router.get('/invoice/:orderId',verifyingUser,uscontroller.get_invoice)
 
 router.get('/logout',uscontroller.get_logout)
+
+router.get('/errorpage',uscontroller.get_errorpage)
 
 module.exports = router;

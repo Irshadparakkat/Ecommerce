@@ -41,6 +41,7 @@ router.post("/addedcatogary" ,varifyAdmin,multer.upload.single('categoryImage'),
 
 router.get("/allproduct",varifyAdmin,controller.get_allproduct)
 
+router.get('/searchproduct',varifyAdmin,controller.get_searchresult)
 
 router.get('/banner',varifyAdmin,controller.get_banner)
 
@@ -64,7 +65,11 @@ router.post("/updateOrderStatus",varifyAdmin,controller.post_updateOrder)
 
 router.get('/deletecoupon/:id',controller.delete_coupon);
 
+
+router.post('/editcoupon/:id',controller.Edit_coupon)
+
 router.get('/delete-category/:id',varifyAdmin,controller.deleteCatogary)
+
 
 router.get('/singleproductview/:id',varifyAdmin,controller.get_productview)
 

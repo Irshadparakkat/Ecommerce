@@ -1,11 +1,11 @@
 <%- include('userpartials/userhead.ejs') %>
 
-<div style="margin-top: 100px;">
-  <h1 style="background: none; margin-left: 180px;">Orders</h1>
+<div style="margin-top: 100px">
+  <h1 style="background: none; margin-left: 180px">Orders</h1>
   <div class="row">
     <% if (orders.length === 0) { %>
     <div class="col-md-6">
-      <div class="card" style="width: 400px;">
+      <div class="card" style="width: 400px">
         <div class="card-body">
           <div class="alert alert-warning" role="alert">
             You have no orders yet.
@@ -13,30 +13,194 @@
         </div>
       </div>
     </div>
-    <% } else { %>
-
-    <% orders.forEach(function(order) { %>
+    <% } else { %> <% orders.forEach(function(order) { %>
     <div class="col-md-6">
-      <div class="card" style="width: 400px;">
+      <div class="card" style="width: 400px">
         <div class="card-body">
           <h5 class="card-title">Order Details</h5>
           <p class="card-text">Order ID: <%= order.orderId %></p>
           <p class="card-text">Status: <%= order.status %></p>
           <p class="card-text">Payment Method: <%= order.payment %></p>
           <p class="card-text">Total: <%= order.total %></p>
-          <a href="/order/<%= order.orderId %>" class="btn btn-primary">View details</a>
-
+          <a href="/order/<%= order.orderId %>" class="btn btn-primary"
+            >View details</a
+          >
           <% if(order.status == 'order delivered'){%>
-            <a href="/cancelorder/<%= order.orderId %>" class="btn btn-success">Return Order</a>
-         <% } else { %>
-          <a href="/cancelorder/<%= order.orderId %>" class="btn btn-success">Cancel Order</a>
+          <button
+            id="order-return"
+            data-order-id="<%= order.orderId %>"
+            data-bs-toggle="modal"
+            data-bs-target="#Return<%= order.orderId %>"
+            class="btn btn btn-dark"
+          >
+            Return Order
+          </button>
+          <% } else if(order.status == 'order returned') { %>
+
+          <button id="order-returned" class="btn btn-danger">
+            Order Return requested
+          </button>
+
+          <% } else if(order.status == 'return process approved') { %>
+
+          <button id="order-return" class="btn btn-info">
+            Return Process Approved
+          </button>
+
+          <% } else {%>
+          <a
+            href="/cancelorder/<%= order.orderId %>"
+            class="btn btn-success"
+            onclick="return confirm('Are you sure you want to cancel this order?')"
+            >Cancel Order</a
+          >
+
           <% } %>
         </div>
       </div>
     </div>
-    <% }) %>
-    <% } %>
+    <div
+      class="modal fade"
+      style="margin-top: 130px"
+      id="Return<%= order.orderId %>"
+      tabindex="-1"
+      aria-labelledby="aria-labelledby"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">
+              Reason for Returning the order
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              autocomplete="off"
+              data-order-id="<%= order.orderId %>"
+              
+            >
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1"
+                  >Enter the Reason</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="areatext"
+                  data-order-id="<%= order.orderId %>"
+                />
+              </div>
+
+              <p id="error-message"></p>
+
+              <button
+                type="button"
+                style="display: none"
+                id="confirm-return"
+                class="btn btn-primary"
+              >
+                Confirm
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% }) %> <% } %>
   </div>
 </div>
+
+<script>
+  const reasonAreaList = document.querySelectorAll(
+    "form[data-order-id] #areatext"
+  );
+  const confirmReturnButtonList = document.querySelectorAll(
+    "form[data-order-id] #confirm-return"
+  );
+
+  reasonAreaList.forEach(function (reasonArea) {
+    const orderId = reasonArea.dataset.orderId;
+    const confirmReturnButton = document.querySelector(
+      `form[data-order-id="${orderId}"] #confirm-return`
+    );
+
+    let confirmed = false;
+
+    reasonArea.addEventListener("input", function () {
+      if (reasonArea.value === "" || reasonArea.value.length < 15) {
+        confirmReturnButton.style.display = "none";
+        confirmed = false;
+      } else {
+        confirmReturnButton.style.display = "block";
+        confirmed = true;
+      }
+    });
+
+    confirmReturnButton.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      // Show the message box
+      const messageBoxButton = document.querySelector(
+        `#Return${orderId} .btn-close`
+      );
+      messageBoxButton.click();
+
+      // If the user confirmed the return action
+      if (confirmed) {
+        const errorMessage = document.querySelector(
+          `#Return${orderId} #error-message`
+        );
+        errorMessage.innerHTML = "";
+
+        // Send a fetch request to return the order
+        fetch("/return-order", {
+          method: "POST",
+          body: JSON.stringify({ orderId: orderId }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Find the button element using the data-order-id attribute
+            const orderReturnButton = document.querySelector(
+              `button[data-order-id="${orderId}"]`
+            );
+
+            // Check the status of the returned order and update the button accordingly
+            if (data.data.status === "order returned") {
+              orderReturnButton.id = "order-returned";
+              orderReturnButton.classList.remove("btn-dark");
+              orderReturnButton.classList.add("btn-danger");
+              orderReturnButton.innerHTML = "Order Return requested";
+            } else if (data.data.status === "return process approved") {
+              orderReturnButton.id = "order-return";
+              orderReturnButton.classList.remove("btn-dark");
+              orderReturnButton.classList.add("btn-info");
+              orderReturnButton.innerHTML = "Return Process Approved";
+            }
+          })
+          .catch((error) => {
+            console.error(`Error returning order ${orderId}:`, error);
+            // Handle the error here
+          });
+      } else {
+        const errorMessage = document.querySelector(
+          `#Return${orderId} #error-message`
+        );
+        errorMessage.innerHTML =
+          "Please enter a reason for returning the order.";
+      }
+    });
+  });
+</script>
 
 <%- include('userpartials/userfooter.ejs') %>

@@ -39,6 +39,13 @@ app.use(nocache());
 app.set('views', path.join(__dirname, "views"));
 app.set('view engine', 'ejs');
 
+// Middleware to handle 404 errors
+app.use(function(req, res, next) {
+  res.status(404).render('error', {
+    message: 'Page not found'
+  });
+});
+
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

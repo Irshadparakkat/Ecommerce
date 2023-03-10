@@ -53,7 +53,7 @@
 
 										</h6>
 								</td>
-								<td class="column-3" id="price">$.<%= cart.product.price %>
+								<td class="column-3" id="price"><%= cart.product.price %>
 								</td>
 								<td class="column-4" style="text-align: center">
 									<div class="wrap-num-product flex-w m-l-auto m-r-0">
@@ -71,14 +71,12 @@
 
 								</td>
 
-								<td class="column-5" name="total">$ <%= cart.totalprice %>
+								<td class="column-5" name="total"> <%= cart.totalprice %>
 								</td>
 
-								<td>
-									<a href="" onclick="removefromcart('<%= cart.product._id %>','<%= cart.size %>')"
-										class="btn btn-warning">Remove</a>
-								</td>
+								<td width="10%" class="text-center"><button id="delete-<%= cart.product._id %>-<%= cart.size %>" class="trash-icon"><i class="far fa-trash-alt"></i></button></td>
 
+				
 							</tr>
 
 
@@ -100,11 +98,7 @@
 							
 						</div>
 
-						<!-- <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                                Update Cart
-                              </div> -->
-
-
+						
 
 
 					</div>
@@ -144,7 +138,7 @@
 					<br>
 					<span class="stext-110 cl2">
 						<h5 class="text-success text-center">
-							Discount Details</h5>
+							Tax Details</h5>
 					</span>
 
 					<div>
@@ -157,10 +151,7 @@
 								  </tr> -->
 							</thead>
 							<tbody>
-								<tr>
-									<td>Coupon applied</td>
-									<td id="Discount">-</td>
-								</tr>
+								
 								<tr>
 									<td>GST</td>
 									<td>18%</td>
@@ -177,24 +168,21 @@
 					<div class="flex-w flex-t p-t-27 p-b-33">
 
 						<span class="mtext-101 cl2">
-							Total : &nbsp; Rs &nbsp;
+							Total : &nbsp; $ &nbsp;
 						</span>
 
 
 						<div class="size-209 p-t-1">
 							<span class="mtext-110 cl2" id="Payable">
-								<%= (0.18*cartitems.cartTotal+cartitems.cartTotal).toFixed(2) %>
+								<%= (0.18*cartitems.cartTotal+cartitems.cartTotal).toFixed(0) %>
 
 							</span>
 						</div>
 					</div>
 					<div class="flex-w flex-t bor12 p-t-15 p-b-30">
 
-						<a href="/checkout" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04">
-							
-							  Proceed to Checkout
-							
-						  </a>
+						<a href="/checkout" style="display: block; margin-left: 40px; background-color: #333; color: #fff; font-size: 20px; padding: 10px 20px;" id="checkingout" class="btn btn-dark" role="button">Proceed to Checkout</a>
+
 						  
 					</div>
 
@@ -402,6 +390,7 @@
 			}
 		}
 	</script>
+
 
 	<script src="/user/js/cart.js"></script>
 

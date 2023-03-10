@@ -23,6 +23,7 @@
     "flash": "^1.1.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.4",
+    "mongoose-paginate-v2": "^1.7.1",
     "multer": "^1.4.5-lts.1",
     "nanoid": "^4.0.1",
     "nocache": "^3.0.4",
@@ -30,7 +31,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "pdfkit": "^0.13.0",
     "shortid": "^2.2.16",
-    "sweetalert2": "^11.7.1",
+    "sweetalert2": "^11.7.3",
     "twilio": "^4.7.2",
     "validator": "^13.7.0"
   },

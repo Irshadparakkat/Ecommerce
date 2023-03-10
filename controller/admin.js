@@ -43,11 +43,25 @@ module.exports.post_adminlog = (req, res) => {
 }
 
 
+module.exports.get_searchresult = async (req,res)=>{
+  try {
+    const searchTerm = req.query.searchTerm;
+  
+    // Perform a search operation based on the search term
+    const products = await Product.find({ name: { $regex: searchTerm, $options: 'i' } });
+    // Return the products as a JSON response
+    res.json({ products });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+}
+
 
 // Function to get category-wise sales data
 const getCategorySales = async () => {
   try {
-    const orders = await Order.find({ status: "order delivered" }).populate("items.product");
+    const orders = await Order.find().populate("items.product");
     const salesData = {};
     let totalSales = 0;
     const categories = await Category.find(); // get all categories from the database
@@ -120,7 +134,6 @@ module.exports.get_adminhome = async (req, res) => {
 
 module.exports.get_addproduct = (req, res) => {
 
-  console.log("this is the add product page");
   Category.find({}, (err, categories) => {
     if (err) {
       console.log(err);
@@ -150,7 +163,6 @@ module.exports.post_addproduct = async (req, res) => {
       return;
     } else {
       res.redirect('allproduct');
-      console.log("success fully added");
     }
   });
 }
@@ -196,16 +208,35 @@ module.exports.Post_addcatogary = async (req, res) => {
 
 
 module.exports.get_allproduct = async (req, res) => {
+  const page = req.query.page || 1;
+  const limit = 5;
+  try {
+    const count = await Product.countDocuments();
+    const totalPages = Math.ceil(count / limit);
+    const products = await Product.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-  Product.find()
-    .then(products => {
-      res.render('admin/allproduct', { products: products });
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    if (req.query.page) {
+      res.status(200).json({
+        products: products,
+        totalPages: totalPages,
+        currentPage: page,
+      });
+    } else {
+      res.render('admin/allproduct', {
+        products: products,
+        totalPages: totalPages,
+        currentPage: page,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 
-}
+
 
 
 module.exports.get_banner = (req, res) => {
@@ -304,6 +335,41 @@ module.exports.delete_coupon = async (req, res) => {
   res.redirect("/admin/coupon");
 };
 
+
+module.exports.Edit_coupon = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const {
+      code,
+      available,
+      status,
+      maxdiscountAmount,
+      mincartAmout,
+      expiredAfter,
+    } = req.body;
+
+    const updatedCoupon = await Coupen.findOneAndUpdate(
+      { _id: id },
+      {
+        code,
+        available,
+        status,
+        maxdiscountAmount,
+        mincartAmout,
+        expiredAfter,
+      },
+      { new: true }
+    );
+
+    res.redirect("back");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+
 module.exports.get_productview = async (req, res) => {
   const id = req.params.id;
 
@@ -351,8 +417,7 @@ module.exports.editproduct = async (req, res) => {
 module.exports.Post_editproduct = async (req, res) => {
 
 
-  console.log(req.body);
-  
+
   const { productid, name, category, size, stock, price, description } = req.body;
 
   

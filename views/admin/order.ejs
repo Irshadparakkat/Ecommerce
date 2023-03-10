@@ -56,12 +56,19 @@
                           data-status="<%= orders[i].status %>" >
                           Order Delivered
                         </button>
-                      <% } else { %>
+                      <% } else if (orders[i].status === 'order returned' ){ %>
                         <button class="btn btn-secondary order-status-btn"  data-orderid="<%= orders[i]._id %>"
                           data-status="<%= orders[i].status %>" >
-                          order Cancelled
+                          order is returned please confirm
                         </button>
-                      <% } %>
+                      <% } else {%>
+                      
+                     
+
+                          <button class="btn btn-dark" >  <a style="color: white;" href="/admin/deletelorder/<%= orders[i]._id %>" onclick="return confirm('Are you sure')"  >Delete</a></button>
+
+
+                        <% } %>
                     </td>
                   
                   <td>
@@ -105,7 +112,14 @@
                    else if(status === "order dispatched"){
 
                     newStatus ="order delivered"
+                   }else if( status === 'order returned'){
+
+                    newStatus = 'return process approved'
                    }
+
+
+
+
                    if (confirm("Are you sure you want to change the Order status to " + newStatus + "?")) {
                      $.ajax({
                        type: "POST",

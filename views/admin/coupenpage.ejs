@@ -1,7 +1,6 @@
 <%- include('partials/adminhead.ejs') %>
 
 
-
     <div class="mobile-menu-overlay"></div>
 
     <div class="main-container">
@@ -16,12 +15,12 @@
                             <tr>
                                 <th class="table-plus datatable-nosort">#</th>
                                 <th>Code</th>
-                                <th>Status</th>
-
+                             
                                 <th>Exp-date</th>
                                 <th>Min Cart-Amount</th>
                                 <th class="datatable-nosort">Discount Amount</th>
                                 <th class="datatable-nosort">Action</th>
+
 
 
                             </tr>
@@ -35,9 +34,7 @@
                                     <td>
                                         <%= element.code %>
                                     </td>
-                                    <td>
-                                        <%= element.status %>
-                                    </td>
+                                    
                                     <td>
                                         <%= element.expiredAfter.toLocaleString() %>
                                     </td>
@@ -50,13 +47,76 @@
 
 
                                     <td>
-                                        <a href="/admin/deletecoupon/<%=element._id%>"
-                                            onclick="return confirm('Are you sure')" class="btn btn-danger">Delete</a>
+                                        <div class="dropdown">
+                                            <a
+                                              class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+                                              href="#"
+                                              role="button"
+                                              data-toggle="dropdown"
+                                            >
+                                              <i class="dw dw-more"></i>
+                                            </a>
+                                            <div
+                                              class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"
+                                            >
+                                            
+                                            <button  class="dropdown-item  dw dw-edit2" data-toggle="modal" data-target="#Edit<%= element._id %>">              
+                                            
+                                               Edit
+                                              </button> 
+                                              <a
+                                                class="dropdown-item"
+                                                href="/admin/deletecoupon/<%=element._id%>"
+                                                onclick="return confirm('Are you sure')" 
+                                                ><i class="dw dw-delete-3"></i> Delete</a
+                                              >
+                                            </div>
+                                      
+                                      
+                                        
                                     </td>
 
 
                                 </tr>
+
+
+                                <div class="modal fade" id="Edit<%= element._id %>" tabindex="-1" role="dialog" aria-labelledby="aria-labelledby" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <form action="/admin/editcoupon/<%= element._id %>" method="post">
+                                            <div class="form-floating mb-3">
+                                                <label for="code">Code</label>
+                                              <input type="text" class="form-control" value="<%= element.code %>" required  id="code" placeholder="Code" name="code">
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <label for="available">Availability</label>
+                                
+                                              <input type="number" class="form-control" id="available" placeholder="Availability"  value="<%= element.available %>" name="available">
+                                            </div>
+                                            <input type="hidden" name="status" value="active">
+                                            <div class="form-floating mb-3">
+                                                <label for="max-discount">Maximum Discount Amount</label>
+                                
+                                              <input type="number" class="form-control" id="max-discount" placeholder="Maximum Discount Amount"  value="<%= element.maxdiscountAmount %>" name="maxdiscountAmount">
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <label for="min-cart">Minimum Cart Amount</label>
+                                
+                                              <input type="number" class="form-control" id="min-cart" placeholder="Minimum Cart Amount"  value="<%= element.mincartAmout %>" name="mincartAmout">
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <label for="exp-date">Expiration Date</label>
+                                
+                                                <input type="date" class="form-control" id="exp-date" name="expiredAfter" value="<%= element.expiredAfter.toISOString().substr(0,10) %>" >
+                                            </div>
+                                            <button type="submit" class="btn btn-primary w-100">Update Coupon</button>
+                                          </form>
+                                      </div>
+                                    </div>
+                                  </div>
+
                                 <% }) %>
+
 
 
                         </tbody>
