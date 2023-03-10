@@ -1,4 +1,4 @@
-const changeQuantity = (cartItemId, productId, quantity, size) => {
+const changeQuantity = async (cartItemId, productId, quantity, size) => {
 
   const fieldqty = document.querySelector(`tr[data-product-id="${productId}"][data-product-size="${size}"] input[id="myfield"]`);
 
@@ -8,10 +8,11 @@ const changeQuantity = (cartItemId, productId, quantity, size) => {
     
   
     if (checkqty < 1) {
-      return removefromcart(productId,size);
+
+      await removefromcart(productId,size);
     } else {
   
-      fetch('/updatecart', {
+     await fetch('/updatecart', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
