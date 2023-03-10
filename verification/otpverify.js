@@ -1,4 +1,6 @@
 
+const dotenv = require('dotenv');
+dotenv.config({ path: './config/dev.env' });
 
 
 // Download the helper library from https://www.twilio.com/docs/node/install

@@ -7,6 +7,9 @@ const flash = require('connect-flash');
 const nocache = require('nocache');
 const path = require("path");
 
+const dotenv = require('dotenv');
+dotenv.config({ path: './config/dev.env' });
+
 require('./db/mongoose');
 
 const app = express();
