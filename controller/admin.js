@@ -20,8 +20,20 @@ dotenv.config({ path: './config/dev.env' });
 
 
 module.exports.get_adminlog = (req, res) => {
+
+  if(req.session.adminauthenticated){
+
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.redirect('adminhome')
+
+  }else{
+
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+
   res.render("admin/adminlogin", { error: req.flash('error') })
 }
+}
+
 
 const adminemail =process.env.adminusername
 const adminpassword = process.env.adminpassword
