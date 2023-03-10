@@ -17,6 +17,10 @@ const Order = require('../models/order');
 const { sendotp, verifyotp } = require("../verification/otpverify");
 
 
+
+const dotenv = require('dotenv');
+dotenv.config({ path: './config/dev.env' });
+
 const paypal = require("@paypal/checkout-server-sdk")
 
 const Environment =

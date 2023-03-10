@@ -15,6 +15,10 @@ const Order = require('../models/order')
 const Banner = require('../models/banner');
 const Address = require('../models/address');
 
+const dotenv = require('dotenv');
+dotenv.config({ path: './config/dev.env' });
+
+
 module.exports.get_adminlog = (req, res) => {
   res.render("admin/adminlogin", { error: req.flash('error') })
 }

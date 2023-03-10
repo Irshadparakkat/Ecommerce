@@ -52,7 +52,6 @@
 
     <link rel="stylesheet" href="/user/css/mycss.css">
     <!--===============================================================================================-->
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
@@ -90,6 +89,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
      
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-2Sl9l/HIvJdGcW8+yDxjCrpMS1+0fezhJiOzCGfO2I0yMkMv1EhFbOZl0RY4KcGukf/2a40bRy28+noSjjbS3A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
     </head>
 
@@ -97,129 +97,99 @@
     <header>
         <!-- Header desktop -->
         <div class="container-menu-desktop">
-
-            <div class="wrap-menu-desktop">
-                <nav class="limiter-menu-desktop container">
-                    <!-- Logo desktop -->
-                    <a href="/" class="logo">
-                        <img src="/user/images/icons/logo-01.png" alt="IMG-LOGO">
-                    </a>
-                    <!-- Menu desktop -->
-                    <div class="menu-desktop">
-                        <ul class="main-menu">
-                            <li >
-                                <a href="/">Coza store</a>
-                            </li>
-
-                            <li>
-                                <a href="/allproducts">Shop</a>
-                            </li>
-
-                            <li>
-                                <a href="/allwishlist">Wishlist</a>
-                            </li>
-
-                             <li>
-                                 <a href="/cart"  >Cart</a>
-                            </li>
-
-                            <li>
-                                <a href="/checkout">Checkout</a>
-                            </li>
-
-                            <li>
-                                <a href="/orders">Order</a>
-                            </li>
-
-                           
-                        </ul>
-                    </div>
-                    <div class="wrap-icon-header flex-w flex-r-m">
-                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user">
-                            <i class='fas fa-user-tie'></i>
-                        </div>
-
-                        <% if (cart){%>
-                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-cart   icon-header-noti js-show-cart" data-notify="<%=cart.items.length%>" >
-							<i class="zmdi zmdi-shopping-cart"></i>
-						</div>
-
-                   <% } %>
-
-                    </div>
-                    </div>
-                </nav>
+          <div class="wrap-menu-desktop">
+            <nav class="limiter-menu-desktop container">
+              <!-- Logo desktop -->
+              <a href="/" class="logo">
+                <img src="/user/images/icons/logo-01.png" alt="IMG-LOGO">
+              </a>
+              <!-- Menu desktop -->
+              <div class="menu-desktop">
+                <ul class="main-menu">
+                  <li>
+                    <a href="/">Coza store</a>
+                  </li>
+                  <li>
+                    <a href="/allproducts">Shop</a>
+                  </li>
+                  <li>
+                    <a href="/allwishlist">Wishlist</a>
+                  </li>
+                  <li>
+                    <a href="/cart">Cart</a>
+                  </li>
+                  <li>
+                    <a href="/checkout">Checkout</a>
+                  </li>
+                  <li>
+                    <a href="/orders">Order</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- User and cart icons -->
+              <div class="wrap-icon-header flex-w flex-r-m">
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user">
+                  <i class="fas fa-user-tie"></i>
+                </div>
+                <% if (cart) { %>
+                  <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-cart icon-header-noti js-show-cart" data-notify="<%=cart.items.length%>">
+                    <i class="zmdi zmdi-shopping-cart"></i>
+                  </div>
+                <% } %>
+              </div>
+            </nav>
+          </div>
+        </div>
+        <!-- Header Mobile -->
+        <div class="wrap-header-mobile">
+          <!-- Logo mobile -->
+          <div class="logo-mobile">
+            <a href="/" class="logo">
+              <img src="/user/images/icons/logo-01.png" alt="IMG-LOGO">
+            </a>
+          </div>
+          <!-- User and cart icons -->
+          <div class="wrap-icon-header flex-w flex-r-m m-r-15">
+            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user">
+                <i class="fa-solid fa-user-tie"></i>
             </div>
-            		<!-- Header Mobile -->
-
-                    <div class="wrap-header-mobile">
-                        <!-- Logo moblie -->		
-                        <div class="logo-mobile">
-                            <a href="/" class="logo">
-                                <img src="/user/images/icons/logo-01.png" alt="IMG-LOGO">
-                            </a></div>
-            
-                        <!-- Icon header -->
-                        <div class="wrap-icon-header flex-w flex-r-m m-r-15">
-                            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user">
-                                <i class='fas fa-user-tie'></i>
-                            </div>
-    
-                            <% if (cart){%>
-                            <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-cart   icon-header-noti js-show-cart" data-notify="<%=cart.items.length%>" >
-                                <i class="zmdi zmdi-shopping-cart"></i>
-                            </div>
-    
-                       <% } %>
-    
-                        </div>
-            
-                        <!-- Button show menu -->
-                        <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="menu-mobile">
-            
-                        <ul class="main-menu-m">
-                            <li >
-                                <a href="/">Coza store</a>
-                            </li>
-
-                            <li>
-                                <a href="allproducts">Shop</a>
-                            </li>
-
-                            <li>
-                                <a href="allwishlist">Wishlist</a>
-                            </li>
-
-                             <li>
-                                 <a href="cart"  >Cart</a>
-                            </li>
-
-                            <li>
-                                <a href="checkout">Checkout</a>
-                            </li>
-
-                            <li>
-                                <a href="/orders">Order</a>
-                            </li>
-
-                            <li>
-                                <a href="contact.html">Contact</a>
-                            </li>
-                        </ul>
-                    </div>
-    
-       
-    </header>
-
-    <!-- Cart -->
-
+            <% if (cart) { %>
+              <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-cart icon-header-noti js-show-cart" data-notify="<%=cart.items.length%>">
+                <i class="zmdi zmdi-shopping-cart"></i>
+              </div>
+            <% } %>
+          </div>
+          <!-- Button show menu -->
+          <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+            <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+            </span>
+          </div>
+        </div>
+        <div class="menu-mobile">
+          <ul class="main-menu-m">
+            <li>
+              <a href="/">Coza store</a>
+            </li>
+            <li>
+              <a href="allproducts">Shop</a>
+            </li>
+            <li>
+              <a href="allwishlist">Wishlist</a>
+            </li>
+            <li>
+              <a href="cart">Cart</a>
+            </li>
+            <li>
+                <a href="/checkout">Checkout</a>
+              </li>
+              <li>
+                <a href="/orders">Order</a>
+              </li>
+        </ul>
+    </div>
+  </header>
+      
 
 
     <% if (user) { %>
