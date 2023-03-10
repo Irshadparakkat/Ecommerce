@@ -256,8 +256,7 @@ module.exports.post_signuppage = async (req, res) => {
   } catch (err) {
 
     console.log(err);
-    res.redirect('/error') 
-
+ 
 
   }
 }
