@@ -268,8 +268,8 @@ module.exports.post_signuppage = async (req, res) => {
 module.exports.getOtp = (req,res)=>{
 
   if(req.session.usr1){
-
-res.render('user/otp',{ error: req.flash('error') })
+   
+res.render('user/otp',{ error: req.flash('error') , Mobnumber  : req.session.usr1.phone })
 }else{
   res.redirect('/signup')
 }

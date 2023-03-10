@@ -42,7 +42,7 @@ router.post("/addtocart",varifyUser,uscontroller.post_cartview)
 
 router.delete('/wishlist/:itemName',verifyingUser,uscontroller.Delete_wishlist)
 
-router.get("/cart",varifyUser,uscontroller.get_cartview);
+router.get("/cart",verifyingUser,uscontroller.get_cartview);
 
 router.get("/userprofile/:id",uscontroller.get_userprofile)
 
