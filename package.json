@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && npm run build-client && npm run build-server",
-    "build-client": "cd client && npm install && npm run build",
-    "build-server": "cd server && npm install && npm run build",
+    "build": "yarn && yarn build-client && yarn build-server",
+    "build-client": "cd client && yarn && yarn build",
+    "build-server": "cd server && yarn && yarn build",
     "dev": "env-cmd -f ./config/dev.env nodemon src/app.js",
     "start": "node server/app.js"
   },
