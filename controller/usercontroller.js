@@ -803,6 +803,19 @@ module.exports.update_cart = async (req, res) => {
       return res.status(400).json({ message: 'Cart not found' });
     }
 
+    if(mycart.cartTotal <= 0){
+
+      const cart = await Cart.findOneAndUpdate(
+        { owner: req.session.userId, "items.product": productId, "items.size": size },
+        {
+          $inc: { "items.$.quantity": 0, "items.$.totalprice": 0 , "cartTotal": 0 }
+        },
+        { new: true }
+      );  
+
+      return res.status(400).json({message: 'Server response may take time' })
+    }
+
     const productItems = mycart.items.filter(item => item.product.toString() === productId.toString());
 
     const singleProduct = productItems.find(item => item.size === size);
