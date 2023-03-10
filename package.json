@@ -5,9 +5,11 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build",
+    "build": "npm install && npm run build-client && npm run build-server",
+    "build-client": "cd client && npm install && npm run build",
+    "build-server": "cd server && npm install && npm run build",
     "dev": "env-cmd -f ./config/dev.env nodemon src/app.js",
-    "start": "node s  rc/app.js"
+    "start": "node server/app.js"
   },
   "author": "",
   "license": "ISC",
