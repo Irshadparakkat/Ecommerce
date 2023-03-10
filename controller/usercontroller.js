@@ -692,7 +692,6 @@ module.exports.post_cartview = async (req, res) => {
 
     const proid = product._id
 
-
     if (!user) {
       // creating a new cart if user does not have one
       const newCart = await Cart.create({
@@ -766,14 +765,20 @@ module.exports.get_cartview = async (req, res) => {
     const cart = await Cart.findOne({ owner: userId }).populate("items.product")
 
 
-    if (cart.items.length) {
+    if (  !cart || cart == null ) {
 
-
-      res.render("user/cartview", { cartitems: cart, user, cart: cart });
-
-    } else {
 
       res.render("user/emptycart", { cart: null, user });
+
+
+     
+    } else if( cart.items.length ) {
+
+      res.render("user/cartview", { cartitems: cart, user, cart: cart });
+    }else{
+
+      res.render("user/emptycart", { cart: null, user });
+
 
     }
 
