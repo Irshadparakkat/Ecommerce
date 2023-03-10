@@ -129,8 +129,10 @@
               <!-- User and cart icons -->
               <div class="wrap-icon-header flex-w flex-r-m">
         
-                  <button class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user    btn btn--icon toggle-button toggle-button--secondary fas fa-user-cog" type="button"></button>
-
+                <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user">
+                  <button class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user    btn btn--icon toggle-button toggle-button--secondary fas fa-user-cog" type="button">My account</button>
+    
+                </div>
                 </div>
                 <% if (cart) { %>
                   <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-cart icon-header-noti js-show-cart" data-notify="<%=cart.items.length%>">
@@ -151,8 +153,10 @@
           </div>
           <!-- User and cart icons -->
           <div class="wrap-icon-header flex-w flex-r-m m-r-15">
+
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user">
-                <i class="fa-solid fa-user-tie"></i>
+              <button class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-user    btn btn--icon toggle-button toggle-button--secondary fas fa-user-cog" type="button">My account</button>
+
             </div>
             <% if (cart) { %>
               <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header js-show-cart icon-header-noti js-show-cart" data-notify="<%=cart.items.length%>">
