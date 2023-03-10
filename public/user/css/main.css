@@ -74,6 +74,10 @@
 .slick-slide {outline: none !important;}
 
 
+.wrap-icon-header {
+  position: relative;
+  z-index: 1;
+}
 
 
 
