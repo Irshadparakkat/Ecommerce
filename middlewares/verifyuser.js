@@ -3,6 +3,8 @@ const varifyUser = (req,res,next)=>{
       next()
 
     }else{
+
+      res.redirect('/login')
       
       res.status(401).json({error: "Not authorized"});
     }
