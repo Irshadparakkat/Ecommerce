@@ -8,7 +8,7 @@ const changeQuantity = (cartItemId, productId, quantity, size) => {
     
   
     if (checkqty < 1) {
-      removefromcart(productId,size);
+      return removefromcart(productId,size);
     } else {
   
       fetch('/updatecart', {
