@@ -683,6 +683,8 @@
             paymentSelector.addEventListener('change', () => {
                 if (paymentSelector.value == 'paypal') {
                     paypalButtonContainer.style.display = 'block';
+                    button.style.display = "none";
+
                 } else if (paymentSelector.value == 'cod') {
                     button.style.display = "block";
                     paypalButtonContainer.style.display = 'none';
