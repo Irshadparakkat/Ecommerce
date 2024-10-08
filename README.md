@@ -5,8 +5,6 @@
 <a href="https://ecommerce-4s1j.onrender.com/">Coza store website</a>
 </div>
 
-## User Interface
-![screencapture-coza-store-](https://github.com/Irshadparakkat/Ecommerce/blob/670871c302e7548446bbe91ccb7f6e390595a355/main.png?raw=true)
 
 ## Admin Panel
 ![screencapture-localhost-3000-admin-dashboard-2022-12-17-05_59_18](admin.png)
